@@ -10,5 +10,5 @@ export const PokemonLogo = styled.Image`
   height: 41px;
   width: 117px;
   left: 129px;
-  margin-bottom: 54px;
+  margin-bottom: 24px;
 `;
