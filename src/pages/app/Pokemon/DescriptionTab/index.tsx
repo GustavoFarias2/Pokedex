@@ -5,7 +5,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import About from './Tabs/About';
 import Stats from './Tabs/Stats';
 
-import {PokemonStatsType, PokemonType} from '../../../../Types/types';
+import {PokemonStatsType, PokemonType} from '../../../../types/types';
 
 export type MaterialTopTabParamList = {
   About: {

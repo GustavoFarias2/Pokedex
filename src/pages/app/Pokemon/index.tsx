@@ -19,7 +19,7 @@ import DescriptionTab from './DescriptionTab';
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../../routes';
-import {PokemonType} from '../../../Types/types';
+import {PokemonType} from '../../../types/types';
 
 const Pokemon: React.FC<NativeStackScreenProps<RootStackParamList, 'Pokemon'>> =
   props => {
