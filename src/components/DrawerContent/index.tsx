@@ -5,13 +5,30 @@ import {
   pokemonApiResourceResponseItem,
 } from '../../services/api';
 
-import {FlatList} from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/AntDesign';
+
 import {ActivityIndicator, Button} from 'react-native-paper';
-import {Text} from 'react-native';
+
+import {
+  Container,
+  TitleView,
+  ClearFilter,
+  Title,
+  SubTitle,
+  FilterFlatList,
+  ButtonView,
+  SpaceBetweenView,
+} from './styles';
 
 import PokemonTypeListItem from './PokemonTypeListItem';
 
-const DrawerContent: React.FC = () => {
+import {DrawerNavigationHelpers} from '@react-navigation/drawer/lib/typescript/src/types';
+
+interface DrawerContentProps {
+  navigation: DrawerNavigationHelpers;
+}
+
+const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
   const [loading, setLoading] = useState(true);
 
   const [types, setTypes] = useState<pokemonApiResourceResponseItem[]>([]);
@@ -30,23 +47,35 @@ const DrawerContent: React.FC = () => {
   }, []);
 
   return (
-    <>
-      <Text>Filtro</Text>
+    <Container>
+      <SpaceBetweenView>
+        <TitleView>
+          <Title>Filter</Title>
 
-      <Text>Tipo</Text>
+          <ClearFilter>Clear filter</ClearFilter>
+        </TitleView>
+
+        <Icon
+          name="close"
+          size={20}
+          onPress={() => navigation.toggleDrawer()}
+        />
+      </SpaceBetweenView>
+
+      <SubTitle>Tipo</SubTitle>
 
       {loading ? (
         <ActivityIndicator animating />
       ) : (
-        <FlatList
-          numColumns={2}
-          data={types}
-          renderItem={PokemonTypeListItem}
-        />
+        <FilterFlatList data={types} renderItem={PokemonTypeListItem} />
       )}
 
-      <Button>Aplicar</Button>
-    </>
+      <ButtonView>
+        <Button mode="contained" color="#2E6EB5" onPress={() => {}}>
+          Aplicar
+        </Button>
+      </ButtonView>
+    </Container>
   );
 };
 

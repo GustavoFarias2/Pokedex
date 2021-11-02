@@ -1,15 +1,19 @@
 import React from 'react';
 
-import {Button} from 'react-native-paper';
+import {ListRenderItem, Text} from 'react-native';
 
-import {ListRenderItem} from 'react-native';
+import {FilterView} from './styles';
 
 interface PokemonType {
   name: string;
 }
 
 const PokemonTypeListItem: ListRenderItem<PokemonType> = ({item}) => {
-  return <Button>{item.name}</Button>;
+  return (
+    <FilterView>
+      <Text style={{color: 'white'}}>{item.name}</Text>
+    </FilterView>
+  );
 };
 
 export default PokemonTypeListItem;
