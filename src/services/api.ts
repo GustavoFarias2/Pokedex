@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import {PokemonType} from '../types/types';
+
 const api = axios.create();
 
 export type pokemonApiResourceResponseItem = {
@@ -21,7 +23,9 @@ export const getPokemonsApi = async () => {
 };
 
 export const getPokemonApi = async (pokemonName: string) => {
-  return await api.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
+  return await api.get<PokemonType>(
+    `https://pokeapi.co/api/v2/pokemon/${pokemonName}`,
+  );
 };
 
 export const getPokemonTypesApi = async () => {
