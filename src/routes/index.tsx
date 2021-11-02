@@ -9,7 +9,9 @@ import Pokemon from '../pages/app/Pokemon';
 
 export type RootStackParamList = {
   Pokedex: undefined;
-  Pokemon: undefined;
+  Pokemon: {
+    pokemonName: string;
+  };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
