@@ -8,7 +8,7 @@ import {
 } from '../../../../../services/api';
 
 import {ActivityIndicator} from 'react-native-paper';
-import {View, FlatList} from 'react-native';
+import {FlatList} from 'react-native';
 
 import PokemonListItem from './components/PokemonListItem';
 
@@ -43,15 +43,15 @@ const PokemonList: React.FC = () => {
   }
 
   return (
-    <View>
-      <FlatList
-        numColumns={2}
-        data={pokemons}
-        renderItem={({item}) => (
-          <PokemonListItem pokemon={item} navigation={navigation} />
-        )}
-      />
-    </View>
+    <FlatList
+      columnWrapperStyle={{justifyContent: 'space-between'}}
+      numColumns={2}
+      showsVerticalScrollIndicator={false}
+      data={pokemons}
+      renderItem={({item}) => (
+        <PokemonListItem pokemon={item} navigation={navigation} />
+      )}
+    />
   );
 };
 
