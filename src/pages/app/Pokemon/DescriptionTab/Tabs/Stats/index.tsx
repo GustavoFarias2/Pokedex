@@ -18,8 +18,9 @@ const Stats: React.FC<
 
   return (
     <Container>
-      {pokemonStats.map(stat => (
+      {pokemonStats.map((stat, i) => (
         <DescriptionItem
+          key={i}
           title={stat.stat.name}
           value={String(stat.base_stat)}
         />
