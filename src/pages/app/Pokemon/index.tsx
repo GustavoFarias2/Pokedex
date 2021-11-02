@@ -4,9 +4,18 @@ import {ActivityIndicator} from 'react-native-paper';
 
 import {getPokemonApi} from '../../../services/api';
 
-import {Text} from 'react-native';
+import {
+  Container,
+  PaddingContainer,
+  TitleView,
+  Title,
+  TypesView,
+  Type,
+  ImageContainer,
+  PokemonImage,
+} from './styles';
 
-import {Container} from './styles';
+import DescriptionTab from './DescriptionTab';
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../../routes';
@@ -46,7 +55,29 @@ const Pokemon: React.FC<NativeStackScreenProps<RootStackParamList, 'Pokemon'>> =
 
     return (
       <Container>
-        <Text>{pokemon.name}</Text>
+        <PaddingContainer>
+          <TitleView>
+            <Title>{pokemon.name}</Title>
+
+            <Title>
+              #{'000'.substring(String(pokemon.id).length) + pokemon.id}
+            </Title>
+          </TitleView>
+
+          <TypesView>
+            {pokemon.types.map((type, i) => (
+              <Type key={i}>{type.type.name}</Type>
+            ))}
+          </TypesView>
+
+          <ImageContainer>
+            <PokemonImage
+              source={{uri: pokemon.sprites.other.home.front_default}}
+            />
+          </ImageContainer>
+        </PaddingContainer>
+
+        <DescriptionTab pokemon={pokemon} />
       </Container>
     );
   };
