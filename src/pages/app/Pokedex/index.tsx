@@ -15,7 +15,9 @@ const Pokedex: React.FC<NativeStackScreenProps<RootStackParamList, 'Pokedex'>> =
   () => {
     return (
       <Drawer.Navigator
-        drawerContent={() => <DrawerContent />}
+        drawerContent={({navigation}) => (
+          <DrawerContent navigation={navigation} />
+        )}
         screenOptions={{drawerPosition: 'right'}}>
         <Drawer.Screen
           name="PokedexPage"
