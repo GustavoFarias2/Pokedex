@@ -43,6 +43,11 @@ const filters = createSlice({
           }
         }
       });
+
+      // Caso nenhum filtro seja selecionado aplicar filtro todos
+      if (!state.find(filter => filter.isActive) && state[0]) {
+        state[0].isActive = true;
+      }
     },
   },
 });
