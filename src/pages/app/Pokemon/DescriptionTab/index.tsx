@@ -33,6 +33,8 @@ const DescriptionTab: React.FC<DescriptionTabProps> = ({pokemon}) => {
           fontWeight: '500',
           fontSize: 14,
         },
+        tabBarIndicatorStyle: {backgroundColor: 'orange'},
+        tabBarPressColor: '#0000000c',
       }}>
       <Tab.Screen name="About" component={About} initialParams={{pokemon}} />
       <Tab.Screen
