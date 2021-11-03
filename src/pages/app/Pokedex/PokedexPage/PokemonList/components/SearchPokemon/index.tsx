@@ -5,18 +5,20 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {Container, TextInput} from './styles';
 
 import {DrawerScreenProps} from '@react-navigation/drawer';
-import {RootStackParamList} from '../../../../../routes';
+import {RootStackParamList} from '../../../../../../../routes';
 
 interface SearchPokemonProps {
   navigation: DrawerScreenProps<RootStackParamList, 'Pokedex'>['navigation'];
+  value: string;
+  setValue: (v: string) => void;
 }
 
 const SearchPokemon: React.FC<SearchPokemonProps> = props => {
-  const {navigation} = props;
+  const {navigation, value, setValue} = props;
 
   return (
     <Container>
-      <TextInput />
+      <TextInput value={value} onChangeText={v => setValue(v)} />
 
       <Icon
         name="options-outline"
