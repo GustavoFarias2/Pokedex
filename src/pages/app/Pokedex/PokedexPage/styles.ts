@@ -1,5 +1,7 @@
 import styled from 'styled-components/native';
 
+import {Dimensions} from 'react-native';
+
 export const Container = styled.View`
   margin: 30px;
   margin-top: 18px;
@@ -8,7 +10,7 @@ export const Container = styled.View`
 
 export const PokemonLogo = styled.Image`
   height: 41px;
-  width: 117px;
-  left: 129px;
+  width: 120px;
+  left: ${Math.round(Dimensions.get('window').width / 2) + 'px'};
   margin-bottom: 24px;
 `;
