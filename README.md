@@ -6,6 +6,12 @@
   Go catch'em all!
 </h3>
 
+---
+
+<p align="center">
+  <img src="https://github.com/GustavoFarias2/ReadMeImages/blob/master/pokedex.png" />
+</p>
+
 ## 🔧 How to use
 
 - Clone the Project
