@@ -1,7 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 import {PokemonType} from './../Types/types';
-import {Filters} from './filters.store';
 
 const pokemons = createSlice({
   name: 'pokemons',
