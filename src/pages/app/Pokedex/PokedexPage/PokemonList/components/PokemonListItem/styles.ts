@@ -1,6 +1,11 @@
 import styled from 'styled-components/native';
 
-export const Card = styled.View`
+import LinearGradient from 'react-native-linear-gradient';
+
+export const Card = styled(LinearGradient).attrs({
+  useAngle: true,
+  angle: 45,
+})`
   height: 95px;
   width: 47.5%;
   margin-bottom: 45px;

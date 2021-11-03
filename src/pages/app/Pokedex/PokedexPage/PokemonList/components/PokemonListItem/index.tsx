@@ -4,11 +4,14 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 import {getPokemonApi} from '../../../../../../../services/api';
 
+import {useLinearGradient} from '../../../../../../../functions/useLinearGradient';
+
 import {TouchableWithoutFeedback} from 'react-native';
 
 import {Card, PokemonImage, Name, NameView} from './styles';
 
 import {RootStackParamList} from '../../../../../../../routes';
+import {PokemonType} from '../../../../../../../types/types';
 
 interface ListRenderItemItemProps {
   pokemon: {
@@ -20,12 +23,12 @@ interface ListRenderItemItemProps {
 const PokemonListItem: React.FC<ListRenderItemItemProps> = props => {
   const {pokemon, navigation} = props;
 
-  const [pokemonImage, setPokemonImage] = useState<string>();
+  const [fetchedPokemon, setFetchedPokemon] = useState<PokemonType>();
 
   const getPokemonImage = useCallback(async () => {
     const {data} = await getPokemonApi(pokemon.name);
 
-    setPokemonImage(data.sprites.other.home.front_default);
+    setFetchedPokemon(data);
   }, [pokemon.name]);
 
   useEffect(() => {
@@ -35,10 +38,14 @@ const PokemonListItem: React.FC<ListRenderItemItemProps> = props => {
   const handleGoToPokemon = () =>
     navigation.navigate('Pokemon', {pokemonName: pokemon.name});
 
+  const colors = useLinearGradient(fetchedPokemon?.types);
+
   return (
     <TouchableWithoutFeedback onPress={handleGoToPokemon}>
-      <Card>
-        <PokemonImage source={{uri: pokemonImage}} />
+      <Card colors={colors}>
+        <PokemonImage
+          source={{uri: fetchedPokemon?.sprites.other.home.front_default}}
+        />
         <NameView>
           <Name>{pokemon.name}</Name>
         </NameView>

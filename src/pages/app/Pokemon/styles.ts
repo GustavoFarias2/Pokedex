@@ -1,5 +1,7 @@
 import styled from 'styled-components/native';
 
+import LinearGradient from 'react-native-linear-gradient';
+
 import {Chip} from 'react-native-paper';
 
 export const Container = styled.View`
@@ -33,7 +35,10 @@ export const Type = styled(Chip)`
   margin-right: 11px;
 `;
 
-export const ImageContainer = styled.View`
+export const ImageContainer = styled(LinearGradient).attrs({
+  useAngle: true,
+  angle: 45,
+})`
   margin-top: 74px;
   width: 100%;
   height: 200px;

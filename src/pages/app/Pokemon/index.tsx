@@ -4,6 +4,8 @@ import {ActivityIndicator} from 'react-native-paper';
 
 import {getPokemonApi} from '../../../services/api';
 
+import {useLinearGradient} from '../../../functions/useLinearGradient';
+
 import {
   Container,
   PaddingContainer,
@@ -45,6 +47,10 @@ const Pokemon: React.FC<NativeStackScreenProps<RootStackParamList, 'Pokemon'>> =
       getPokemon();
     }, [getPokemon]);
 
+    const linearGradientColors = useLinearGradient(
+      pokemon ? pokemon.types : undefined,
+    );
+
     if (loading || !pokemon) {
       return (
         <Container>
@@ -70,7 +76,7 @@ const Pokemon: React.FC<NativeStackScreenProps<RootStackParamList, 'Pokemon'>> =
             ))}
           </TypesView>
 
-          <ImageContainer>
+          <ImageContainer colors={linearGradientColors}>
             <PokemonImage
               style={[
                 {},
@@ -81,7 +87,7 @@ const Pokemon: React.FC<NativeStackScreenProps<RootStackParamList, 'Pokemon'>> =
           </ImageContainer>
         </PaddingContainer>
 
-        <DescriptionTab pokemon={pokemon} />
+        <DescriptionTab pokemon={pokemon} tabColor={linearGradientColors[0]} />
       </Container>
     );
   };

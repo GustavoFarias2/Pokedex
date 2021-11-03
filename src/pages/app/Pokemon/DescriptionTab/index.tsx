@@ -18,11 +18,14 @@ export type MaterialTopTabParamList = {
 
 interface DescriptionTabProps {
   pokemon: PokemonType;
+  tabColor: string;
 }
 
 const Tab = createMaterialTopTabNavigator<MaterialTopTabParamList>();
 
-const DescriptionTab: React.FC<DescriptionTabProps> = ({pokemon}) => {
+const DescriptionTab: React.FC<DescriptionTabProps> = props => {
+  const {pokemon, tabColor} = props;
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -33,7 +36,7 @@ const DescriptionTab: React.FC<DescriptionTabProps> = ({pokemon}) => {
           fontWeight: '500',
           fontSize: 14,
         },
-        tabBarIndicatorStyle: {backgroundColor: 'orange'},
+        tabBarIndicatorStyle: {backgroundColor: tabColor},
         tabBarPressColor: '#0000000c',
       }}>
       <Tab.Screen name="About" component={About} initialParams={{pokemon}} />
