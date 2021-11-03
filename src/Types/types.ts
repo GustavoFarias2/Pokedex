@@ -1,6 +1,6 @@
 import {pokemonApiResourceResponseItem} from '../services/api';
 
-type PokemonTypeType = {
+export type PokemonTypeType = {
   slot: number;
   type: pokemonApiResourceResponseItem;
 };
@@ -31,6 +31,5 @@ export type PokemonType = {
   species: pokemonApiResourceResponseItem;
   height: number;
   abilities: Array<PokemonAbilityType>;
-  gender: 'Male' | 'Fem';
   stats: Array<PokemonStatsType>;
 };
