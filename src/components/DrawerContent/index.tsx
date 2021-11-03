@@ -24,6 +24,8 @@ import {
 import PokemonTypeListItem from './PokemonTypeListItem';
 
 import {DrawerNavigationHelpers} from '@react-navigation/drawer/lib/typescript/src/types';
+import {filterPokemons} from '../../store/pokemons.store';
+import useFilterPokemons from '../../functions/useFilterPokemons';
 
 interface DrawerContentProps {
   navigation: DrawerNavigationHelpers;
@@ -53,13 +55,17 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
 
   const handleClearFilterPress = () => {
     dispatch(toggleFilter('all'));
+
+    useFilterPokemons(dispatch, filters, 'all');
   };
 
   const handleFilterPress = useCallback(
-    (filter: string) => {
-      dispatch(toggleFilter(filter));
+    (toggledFilter: string) => {
+      dispatch(toggleFilter(toggledFilter));
+
+      useFilterPokemons(dispatch, filters, toggledFilter);
     },
-    [dispatch],
+    [dispatch, filters],
   );
 
   const closeDrawer = () => navigation.toggleDrawer();

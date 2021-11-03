@@ -7,6 +7,8 @@ import {RootState} from '../../../../../store';
 
 import {Container, Filter} from './styles';
 
+import useFilterPokemons from '../../../../../functions/useFilterPokemons';
+
 const FilterList: React.FC = () => {
   const dispatch = useDispatch();
 
@@ -14,6 +16,8 @@ const FilterList: React.FC = () => {
 
   const handleFilterPress = (filter: string) => {
     dispatch(toggleFilter(filter));
+
+    useFilterPokemons(dispatch, filters, filter);
   };
 
   return (
