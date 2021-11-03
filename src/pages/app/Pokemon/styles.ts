@@ -43,8 +43,7 @@ export const ImageContainer = styled.View`
 
 export const PokemonImage = styled.Image`
   position: absolute;
-  top: -100px;
-  left: 40px;
+  left: 50%;
   width: 254px;
   height: 254px;
 `;

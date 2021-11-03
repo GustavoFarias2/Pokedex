@@ -72,6 +72,10 @@ const Pokemon: React.FC<NativeStackScreenProps<RootStackParamList, 'Pokemon'>> =
 
           <ImageContainer>
             <PokemonImage
+              style={[
+                {},
+                {transform: [{translateX: -127}, {translateY: -100}]},
+              ]}
               source={{uri: pokemon.sprites.other.home.front_default}}
             />
           </ImageContainer>
