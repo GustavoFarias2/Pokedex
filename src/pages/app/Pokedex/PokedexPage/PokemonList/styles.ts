@@ -8,6 +8,7 @@ export const PokemonFlatList = styled.FlatList.attrs({
   },
   contentContainerStyle: {
     paddingTop: 30,
+    paddingBottom: 60,
   },
   numColumns: 2,
   showsVerticalScrollIndicator: false,

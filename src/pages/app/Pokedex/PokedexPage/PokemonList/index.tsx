@@ -4,10 +4,10 @@ import {useNavigation} from '@react-navigation/core';
 
 import {useDispatch, useSelector} from 'react-redux';
 
-import {setPokemons} from '../../../../../store/pokemons.store';
+import {addPokemons, setPokemons} from '../../../../../store/pokemons.store';
 import {RootState} from '../../../../../store';
 
-import {getPokemonsApi} from '../../../../../services/api';
+import api, {getPokemonsApi} from '../../../../../services/api';
 
 import {ActivityIndicator} from 'react-native-paper';
 
@@ -24,17 +24,21 @@ const PokemonList: React.FC = () => {
 
   const dispatch = useDispatch();
 
-  const [loading, setLoading] = useState(true);
-
   const pokemons = useSelector((store: RootState) => store.pokemons);
+
+  const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(true);
+
+  const [nextUrl, setNextUrl] = useState<string | undefined>();
 
   const getPokemons = useCallback(async () => {
     const {
-      data: {results},
+      data: {next, results},
     } = await getPokemonsApi();
 
     dispatch(setPokemons(results));
 
+    setNextUrl(next);
     setLoading(false);
   }, [dispatch]);
 
@@ -42,17 +46,41 @@ const PokemonList: React.FC = () => {
     getPokemons();
   }, [getPokemons]);
 
+  const handleEndReached = async () => {
+    if (nextUrl) {
+      setLoadingMore(true);
+      const {
+        data: {next, results},
+      } = await api.get(nextUrl);
+
+      dispatch(addPokemons(results));
+
+      setNextUrl(next);
+      setLoadingMore(false);
+    }
+  };
+
   if (loading) {
     return <ActivityIndicator animating />;
   }
 
   return (
-    <PokemonFlatList
-      data={pokemons}
-      renderItem={({item}) => (
-        <PokemonListItem pokemon={item} navigation={navigation} />
-      )}
-    />
+    <>
+      <PokemonFlatList
+        data={pokemons}
+        renderItem={({item}) => (
+          <PokemonListItem pokemon={item} navigation={navigation} />
+        )}
+        onEndReached={handleEndReached}
+        ListFooterComponent={() =>
+          loadingMore ? (
+            <ActivityIndicator style={{marginBottom: 20}} animating />
+          ) : (
+            <></>
+          )
+        }
+      />
+    </>
   );
 };
 

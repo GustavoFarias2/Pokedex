@@ -9,9 +9,14 @@ const pokemons = createSlice({
       _,
       {payload}: PayloadAction<pokemonApiResourceResponseItem[]>,
     ) => payload,
+
+    addPokemons: (
+      state,
+      {payload}: PayloadAction<pokemonApiResourceResponseItem[]>,
+    ) => [...state, ...payload],
   },
 });
 
-export const {setPokemons} = pokemons.actions;
+export const {setPokemons, addPokemons} = pokemons.actions;
 
 export default pokemons.reducer;
