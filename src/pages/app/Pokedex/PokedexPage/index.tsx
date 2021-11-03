@@ -8,7 +8,6 @@ import {Container, PokemonLogo} from './styles';
 
 import PokemonList from './PokemonList';
 
-import SearchPokemon from './SearchPokemon';
 import FilterList from './FilterList';
 
 import {RootStackParamList} from '../../../../routes';
@@ -17,31 +16,29 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useDispatch} from 'react-redux';
 import {logout} from '../../../../store/auth.store';
 
-const Pokedex: React.FC<DrawerScreenProps<RootStackParamList, 'Pokedex'>> =
-  props => {
-    const {navigation} = props;
+const Pokedex: React.FC<DrawerScreenProps<RootStackParamList, 'Pokedex'>> = ({
+  navigation,
+}) => {
+  const dispatch = useDispatch();
 
-    const dispatch = useDispatch();
+  const handleLogoPress = async () => {
+    await AsyncStorage.removeItem('@pokedex_user_token');
 
-    const handleLogoPress = async () => {
-      await AsyncStorage.removeItem('@pokedex_user_token');
-
-      dispatch(logout());
-    };
-
-    return (
-      <Container>
-        <TouchableOpacity onPress={handleLogoPress}>
-          <PokemonLogo
-            style={[{}, [{transform: [{translateX: -94}]}]]}
-            source={require('../../../../assets/pokemon_logo.png')}
-          />
-        </TouchableOpacity>
-        <SearchPokemon navigation={navigation} />
-        <FilterList />
-        <PokemonList />
-      </Container>
-    );
+    dispatch(logout());
   };
+
+  return (
+    <Container>
+      <TouchableOpacity onPress={handleLogoPress}>
+        <PokemonLogo
+          style={[{}, [{transform: [{translateX: -94}]}]]}
+          source={require('../../../../assets/pokemon_logo.png')}
+        />
+      </TouchableOpacity>
+      <FilterList />
+      <PokemonList drawerNavigation={navigation} />
+    </Container>
+  );
+};
 
 export default Pokedex;
