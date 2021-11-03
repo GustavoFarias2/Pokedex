@@ -18,7 +18,7 @@ type pokemonApiResourceResponse = {
 
 export const getPokemonsApi = async () => {
   return await api.get<pokemonApiResourceResponse>(
-    'https://pokeapi.co/api/v2/pokemon',
+    'https://pokeapi.co/api/v2/pokemon?limit=40',
   );
 };
 
