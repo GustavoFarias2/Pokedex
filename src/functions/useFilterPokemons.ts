@@ -6,7 +6,7 @@ import {filterPokemons} from '../store/pokemons.store';
 const useFilterPokemons = (
   dispatch: Dispatch<any>,
   filters: Filters[],
-  toggledFilter: string,
+  toggledFilter?: string,
 ) => {
   if (toggledFilter === 'all') {
     dispatch(filterPokemons(['all']));
