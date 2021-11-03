@@ -13,25 +13,42 @@ import {ActivityIndicator} from 'react-native-paper';
 
 import {PokemonFlatList} from './styles';
 
+import SearchPokemon from './components/SearchPokemon';
 import PokemonListItem from './components/PokemonListItem';
 
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {DrawerScreenProps} from '@react-navigation/drawer';
 import {RootStackParamList} from '../../../../../routes';
+import {PokemonType} from '../../../../../Types/types';
+import useFilterPokemons from '../../../../../functions/useFilterPokemons';
 
-const PokemonList: React.FC = () => {
+interface PokemonListProps {
+  drawerNavigation: DrawerScreenProps<
+    RootStackParamList,
+    'Pokedex'
+  >['navigation'];
+}
+
+const PokemonList: React.FC<PokemonListProps> = ({drawerNavigation}) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, any>>();
 
   const dispatch = useDispatch();
 
-  const pokemons = useSelector(
-    (store: RootState) => store.pokemons.filteredPokemons,
-  );
+  const {pokemons, filters} = useSelector((store: RootState) => ({
+    pokemons: store.pokemons.filteredPokemons,
+    filters: store.filters,
+  }));
+
+  // const [searchedPokemons, setSearchedPokemons] =
+  //   useState<PokemonType[]>(pokemons);
 
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(true);
 
   const [nextUrl, setNextUrl] = useState<string | undefined>();
+
+  const [search, setSearch] = useState('');
 
   const getPokemons = useCallback(async () => {
     const {
@@ -73,9 +90,20 @@ const PokemonList: React.FC = () => {
 
       dispatch(addPokemons(pokemonsWithInfo));
 
+      useFilterPokemons(dispatch, filters);
+
       setNextUrl(next);
       setLoadingMore(false);
     }
+  };
+
+  const handleChangeSearch = (v: string) => {
+    // const newSearchedPokemons = pokemons.filter(pokemon =>
+    //   pokemon.name.includes(v),
+    // );
+
+    setSearch(v);
+    // setSearchedPokemons(newSearchedPokemons);
   };
 
   if (loading) {
@@ -84,11 +112,18 @@ const PokemonList: React.FC = () => {
 
   return (
     <>
+      <SearchPokemon
+        navigation={drawerNavigation}
+        value={search}
+        setValue={v => handleChangeSearch(v)}
+      />
+
       <PokemonFlatList
         data={pokemons}
         renderItem={({item}) => (
           <PokemonListItem pokemon={item} navigation={navigation} />
         )}
+        keyExtractor={(_, i) => String(i)}
         onEndReached={handleEndReached}
         ListFooterComponent={() =>
           loadingMore ? (
