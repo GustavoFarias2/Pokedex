@@ -1,18 +1,24 @@
 import React from 'react';
 
-import {ListRenderItem, Text} from 'react-native';
+import {TouchableWithoutFeedback} from 'react-native';
+import {Filters} from '../../../store/filters.store';
 
-import {FilterView} from './styles';
+import {FilterView, FilterText} from './styles';
 
-interface PokemonType {
-  name: string;
+interface PokemonTypeListItemProps {
+  filter: Filters;
+  handleFilterPress: () => void;
 }
 
-const PokemonTypeListItem: ListRenderItem<PokemonType> = ({item}) => {
+const PokemonTypeListItem: React.FC<PokemonTypeListItemProps> = props => {
+  const {filter, handleFilterPress} = props;
+
   return (
-    <FilterView>
-      <Text style={{color: 'white'}}>{item.name}</Text>
-    </FilterView>
+    <TouchableWithoutFeedback onPress={handleFilterPress}>
+      <FilterView isActive={filter.isActive}>
+        <FilterText isActive={filter.isActive}>{filter.filter}</FilterText>
+      </FilterView>
+    </TouchableWithoutFeedback>
   );
 };
 

@@ -1,13 +1,14 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 
-import {
-  getPokemonTypesApi,
-  pokemonApiResourceResponseItem,
-} from '../../services/api';
+import {getPokemonTypesApi} from '../../services/api';
 
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import {ActivityIndicator, Button} from 'react-native-paper';
+
+import {RootState} from '../../store';
+import {setFilters, toggleFilter} from '../../store/filters.store';
 
 import {
   Container,
@@ -29,22 +30,39 @@ interface DrawerContentProps {
 }
 
 const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
+  const dispatch = useDispatch();
+
   const [loading, setLoading] = useState(true);
 
-  const [types, setTypes] = useState<pokemonApiResourceResponseItem[]>([]);
+  const {filters} = useSelector((store: RootState) => store);
 
-  const getTypes = async () => {
-    const {
-      data: {results},
-    } = await getPokemonTypesApi();
+  const getTypes = useCallback(async () => {
+    if (loading) {
+      const {
+        data: {results},
+      } = await getPokemonTypesApi();
 
-    setTypes(results);
-    setLoading(false);
-  };
+      dispatch(setFilters(results));
+      setLoading(false);
+    }
+  }, [dispatch, loading]);
 
   useEffect(() => {
     getTypes();
-  }, []);
+  }, [getTypes]);
+
+  const handleClearFilterPress = () => {
+    dispatch(toggleFilter('all'));
+  };
+
+  const handleFilterPress = useCallback(
+    (filter: string) => {
+      dispatch(toggleFilter(filter));
+    },
+    [dispatch],
+  );
+
+  const closeDrawer = () => navigation.toggleDrawer();
 
   return (
     <Container>
@@ -52,14 +70,14 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
         <TitleView>
           <Title>Filter</Title>
 
-          <ClearFilter>Clear filter</ClearFilter>
+          {!loading && !filters[0].isActive && (
+            <ClearFilter onPress={handleClearFilterPress}>
+              Clear filter
+            </ClearFilter>
+          )}
         </TitleView>
 
-        <Icon
-          name="close"
-          size={20}
-          onPress={() => navigation.toggleDrawer()}
-        />
+        <Icon name="close" size={20} onPress={closeDrawer} />
       </SpaceBetweenView>
 
       <SubTitle>Tipo</SubTitle>
@@ -67,11 +85,19 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
       {loading ? (
         <ActivityIndicator animating />
       ) : (
-        <FilterFlatList data={types} renderItem={PokemonTypeListItem} />
+        <FilterFlatList
+          data={filters}
+          renderItem={({item}) => (
+            <PokemonTypeListItem
+              filter={item}
+              handleFilterPress={() => handleFilterPress(item.filter)}
+            />
+          )}
+        />
       )}
 
       <ButtonView>
-        <Button mode="contained" color="#2E6EB5" onPress={() => {}}>
+        <Button mode="contained" color="#2E6EB5" onPress={closeDrawer}>
           Aplicar
         </Button>
       </ButtonView>

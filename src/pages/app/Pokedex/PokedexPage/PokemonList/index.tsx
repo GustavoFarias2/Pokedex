@@ -1,11 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 
 import {useNavigation} from '@react-navigation/core';
 
-import {
-  getPokemonsApi,
-  pokemonApiResourceResponseItem,
-} from '../../../../../services/api';
+import {useDispatch, useSelector} from 'react-redux';
+
+import {setPokemons} from '../../../../../store/pokemons.store';
+import {RootState} from '../../../../../store';
+
+import {getPokemonsApi} from '../../../../../services/api';
 
 import {ActivityIndicator} from 'react-native-paper';
 
@@ -20,24 +22,25 @@ const PokemonList: React.FC = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, any>>();
 
+  const dispatch = useDispatch();
+
   const [loading, setLoading] = useState(true);
 
-  const [pokemons, setPokemons] = useState<pokemonApiResourceResponseItem[]>(
-    [],
-  );
+  const pokemons = useSelector((store: RootState) => store.pokemons);
 
-  const getPokemons = async () => {
+  const getPokemons = useCallback(async () => {
     const {
       data: {results},
     } = await getPokemonsApi();
 
-    setPokemons(results);
+    dispatch(setPokemons(results));
+
     setLoading(false);
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     getPokemons();
-  }, []);
+  }, [getPokemons]);
 
   if (loading) {
     return <ActivityIndicator animating />;
