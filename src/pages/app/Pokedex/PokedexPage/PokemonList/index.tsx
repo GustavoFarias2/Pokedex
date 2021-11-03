@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {addPokemons, setPokemons} from '../../../../../store/pokemons.store';
 import {RootState} from '../../../../../store';
 
-import api, {getPokemonsApi} from '../../../../../services/api';
+import api, {getPokemonApi, getPokemonsApi} from '../../../../../services/api';
 
 import {ActivityIndicator} from 'react-native-paper';
 
@@ -24,7 +24,9 @@ const PokemonList: React.FC = () => {
 
   const dispatch = useDispatch();
 
-  const pokemons = useSelector((store: RootState) => store.pokemons);
+  const pokemons = useSelector(
+    (store: RootState) => store.pokemons.filteredPokemons,
+  );
 
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(true);
@@ -36,7 +38,15 @@ const PokemonList: React.FC = () => {
       data: {next, results},
     } = await getPokemonsApi();
 
-    dispatch(setPokemons(results));
+    let pokemonsWithInfo = [];
+
+    for await (let pokemon of results) {
+      const {data} = await getPokemonApi(pokemon.name);
+
+      pokemonsWithInfo.push(data);
+    }
+
+    dispatch(setPokemons(pokemonsWithInfo));
 
     setNextUrl(next);
     setLoading(false);
@@ -53,7 +63,15 @@ const PokemonList: React.FC = () => {
         data: {next, results},
       } = await api.get(nextUrl);
 
-      dispatch(addPokemons(results));
+      let pokemonsWithInfo = [];
+
+      for await (let pokemon of results) {
+        const {data} = await getPokemonApi(pokemon.name);
+
+        pokemonsWithInfo.push(data);
+      }
+
+      dispatch(addPokemons(pokemonsWithInfo));
 
       setNextUrl(next);
       setLoadingMore(false);
