@@ -10,6 +10,11 @@ const store = configureStore({
     filters: filtersReducer,
     auth: authReducer,
   },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      immutableCheck: {warnAfter: 2000, ignoredPaths: ['pokemons']},
+      serializableCheck: {warnAfter: 2000, ignoredPaths: ['pokemons']},
+    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
